@@ -39,7 +39,7 @@ func main() {
 
 	app.MapHandlerFunc("/", helloHandler)
 
-	app.Run()
+	app.Run(nil)
 }
 
 ```
