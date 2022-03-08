@@ -16,7 +16,7 @@ func main() {
 
 	app := builder.Build()
 
-	app.MapHandler("/", helloHandler)
+	app.MapHandlerFunc("/", helloHandler)
 
 	app.Run()
 }
