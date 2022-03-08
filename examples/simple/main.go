@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/rafiulgits/gotnet"
@@ -18,5 +19,9 @@ func main() {
 
 	app.MapHandlerFunc("/", helloHandler)
 
-	app.Run()
+	app.BeforeRun(func() {
+		log.Println("start background services")
+	})
+
+	app.Run(nil)
 }
