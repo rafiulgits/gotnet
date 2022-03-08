@@ -3,7 +3,6 @@ package main
 import (
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/rafiulgits/gotnet"
 )
 
@@ -14,10 +13,8 @@ func main() {
 
 	app.Service.AddSingleton(NewProductService)
 
-	app.RegisterHandler(NewProductHandler, func(router *chi.Mux, container *gotnet.Container) {
-		container.Invoke(func(handler IProductHandler) {
-			router.Route("/products", handler.Handle)
-		})
+	app.RegisterHandler(NewProductHandler, func(handler IProductHandler) {
+		app.Router.Mount("/products", handler.Handle())
 	})
 
 	app.Run()
@@ -38,8 +35,10 @@ func NewProductHandler(productService IProductService) IProductHandler {
 	}
 }
 
-func (handler *ProductHandler) Handle(router chi.Router) {
+func (handler *ProductHandler) Handle() http.Handler {
+	router := gotnet.NewRouter()
 	router.Get("/", handler.getProductHandler)
+	return router
 }
 
 func (handler *ProductHandler) getProductHandler(w http.ResponseWriter, r *http.Request) {
