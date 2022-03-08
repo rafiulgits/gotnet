@@ -1,7 +1,9 @@
 package gotnet
 
-import "github.com/go-chi/chi/v5"
+import (
+	"net/http"
+)
 
 type IHandler interface {
-	Handle(router chi.Router)
+	Handle() http.Handler
 }

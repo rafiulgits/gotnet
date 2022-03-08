@@ -3,13 +3,11 @@ package gotnet
 import (
 	"log"
 	"net/http"
-
-	"github.com/go-chi/chi/v5"
 )
 
 type App struct {
 	Service *Service
-	Router  *chi.Mux
+	Router  *Router
 }
 
 func (app *App) Run() {
@@ -22,10 +20,10 @@ func (app *App) MapHandlerFunc(pattern string, handlerFn http.HandlerFunc) *App 
 	return app
 }
 
-type HandlerRegistration func(router *chi.Mux, container *Container)
-
-func (app *App) RegisterHandler(constructor interface{}, callback HandlerRegistration) *App {
+func (app *App) RegisterHandler(constructor interface{}, invoker interface{}) *App {
 	app.Service.AddSingleton(constructor)
-	callback(app.Router, app.Service.Container())
+	if err := app.Service.Container().Invoke(invoker); err != nil {
+		panic(err)
+	}
 	return app
 }
