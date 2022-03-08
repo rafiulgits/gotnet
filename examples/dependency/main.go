@@ -17,7 +17,7 @@ func main() {
 		app.Router.Mount("/products", handler.Handle())
 	})
 
-	app.Run()
+	app.Run(&gotnet.AppRunConfig{Port: 5001})
 }
 
 // Handler Layer
