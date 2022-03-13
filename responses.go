@@ -61,3 +61,9 @@ func PreconditionFailed(w http.ResponseWriter, d interface{}) {
 	w.WriteHeader(http.StatusPreconditionFailed)
 	json.NewEncoder(w).Encode(d)
 }
+
+//Response : HTTP response with status code
+func Response(w http.ResponseWriter, statusCode int, d interface{}) {
+	w.WriteHeader(statusCode)
+	json.NewEncoder(w).Encode(d)
+}
